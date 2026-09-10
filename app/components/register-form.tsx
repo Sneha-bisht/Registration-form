@@ -16,7 +16,7 @@ export default function Registerform() {
   const [submittedData, setSubmittedData] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onSubmit = (data: any) =>
+  const onSubmit = (data: any) => {
     setSubmittedData(data);
     setIsModalOpen(true);
   };
