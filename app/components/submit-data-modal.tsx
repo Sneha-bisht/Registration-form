@@ -16,7 +16,7 @@ interface ISubmittedData {
   department?: string;
   gender?: string;
   skills?: string[];
-  terms?: boolean;
+ 
   about?: string;
   address?: ISubmittedAddress;
 }
@@ -29,8 +29,8 @@ interface SubmittedDataModalProps {
 
 function Row({ label, value }: { label: string; value?: string | number }) {
   return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-xs font-medium  tracking-wide text-gray-400">
+    <div className="flex flex-col gap-2">
+      <span className="text-sm font-medium  text-gray-400">
         {label}
       </span>
       <span className="text-sm text-gray-900">{value || "-"}</span>
@@ -55,7 +55,7 @@ export function SubmittedDataModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 border-b border-gray-100 bg-gray-50 px-6 py-5">
+        <div className="flex items-start justify-between gap-4  bg-gray-50 px-6 py-5">
           <div className="flex items-center gap-3">
             <div>
               <h2 className="text-lg font-bold text-gray-900">
@@ -64,33 +64,14 @@ export function SubmittedDataModal({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-200 hover:text-gray-600"
-          >
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+         
         </div>
 
         {/* Body */}
         <div className="max-h-[65vh] overflow-y-auto px-6 py-5">
           <section className="mb-5">
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
-              Personal Info
+            <h3 className="mb-3 text-sm font-medium uppercase text-black">
+              Personal Information
             </h3>
             <div className="grid grid-cols-2 gap-4">
               <Row label="Name" value={data.name} />
@@ -100,13 +81,13 @@ export function SubmittedDataModal({
               <Row label="Department" value={data.department} />
               <Row label="Gender" value={data.gender} />
               <Row label="Skills" value={data.skills?.join(", ")} />
-              <Row label="Terms Accepted" value={data.terms ? "Yes" : "No"} />
+           
             </div>
           </section>
 
           {data.about && (
             <section className="mb-5">
-              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+              <h3 className="mb-3 text-sm font-medium uppercase text-black">
                 About
               </h3>
               <p className="text-sm text-gray-700">{data.about}</p>
@@ -114,7 +95,7 @@ export function SubmittedDataModal({
           )}
 
           <section>
-            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+            <h3 className="mb-3 text-sm font-medium uppercase text-black">
               Address
             </h3>
             <div className="grid grid-cols-2 gap-4">
