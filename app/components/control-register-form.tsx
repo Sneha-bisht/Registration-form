@@ -72,7 +72,6 @@ export default function ControlRegisterform(){
   const [submittedData, setSubmittedData] = useState<FormData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const inputStyle = "rounded-lg border px-3 py-2";
-  const errorMsg= "errorMsg";
 
 
 const handleChange = (
@@ -212,7 +211,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.name}
             onChange={handleChange}
           />
-          {errors.name && <p className="errorMsg">{errors.name}</p>}
+          {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
         </div>
 
         {/* Email */}
@@ -227,7 +226,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.email}
             onChange={handleChange}
           />
-          {errors.email && <p className="errorMsg">{errors.email}</p>}
+          {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -242,7 +241,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.password}
             onChange={handleChange}
           />
-          {errors.password && <p className="errorMsg">{errors.password}</p>}
+          {errors.password && <p className="text-sm text-red-600">{errors.password}</p>}
         </div>
 
         {/* Confirm password */}
@@ -258,7 +257,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange={handleChange}
           />
           {errors.confirmPassword && (
-            <p className="errorMsg">{errors.confirmPassword}</p>
+            <p className="text-sm text-red-600">{errors.confirmPassword}</p>
           )}
         </div>
 
@@ -274,7 +273,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.age}
             onChange={handleChange}
           />
-          {errors.age && <p className="errorMsg">{errors.age}</p>}
+          {errors.age && <p className="text-sm text-red-600">{errors.age}</p>}
         </div>
 
         {/* Phone */}
@@ -289,7 +288,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.phone}
             onChange={handleChange}
           />
-          {errors.phone && <p className="errorMsg">{errors.phone}</p>}
+          {errors.phone && <p className="text-sm text-red-600">{errors.phone}</p>}
         </div>
 
         {/* Department */}
@@ -310,7 +309,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             <option value="marketing">Marketing</option>
           </select>
           {errors.department && (
-            <p className="errorMsg">{errors.department}</p>
+            <p className="text-sm text-red-600">{errors.department}</p>
           )}
         </div>
 
@@ -347,7 +346,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             />
             Other
           </label>
-          {errors.gender && <p className="errorMsg">{errors.gender}</p>}
+          {errors.gender && <p className="text-sm text-red-600">{errors.gender}</p>}
         </fieldset>
 
         {/* Skills */}
@@ -389,7 +388,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             />
             TypeScript
           </label>
-          {errors.skills && <p className="errorMsg">{errors.skills}</p>}
+          {errors.skills && <p className="text-sm text-red-600">{errors.skills}</p>}
         </fieldset>
 
        
@@ -406,7 +405,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={formData.about}
             onChange={handleChange}
           />
-          {errors.about && <p className="errorMsg">{errors.about}</p>}
+          {errors.about && <p className="text-sm text-red-600">{errors.about}</p>}
         </div>
 
         {/* Address */}
@@ -424,7 +423,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleAddressChange}
             />
             {errors.address?.street && (
-              <p className="errorMsg">{errors.address.street}</p>
+              <p className="text-sm text-red-600">{errors.address.street}</p>
             )}
           </div>
 
@@ -439,7 +438,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleAddressChange}
             />
             {errors.address?.city && (
-              <p className="errorMsg">{errors.address.city}</p>
+              <p className="text-sm text-red-600">{errors.address.city}</p>
             )}
           </div>
 
@@ -454,7 +453,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleAddressChange}
             />
             {errors.address?.state && (
-              <p className="errorMsg">{errors.address.state}</p>
+              <p className="text-sm text-red-600">{errors.address.state}</p>
             )}
           </div>
 
@@ -469,7 +468,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleAddressChange}
             />
             {errors.address?.zipCode && (
-              <p className="errorMsg">{errors.address.zipCode}</p>
+              <p className="text-sm text-red-600">{errors.address.zipCode}</p>
             )}
           </div>
 
@@ -484,7 +483,7 @@ const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleAddressChange}
             />
             {errors.address?.country && (
-              <p className="errorMsg">{errors.address.country}</p>
+              <p className="text-sm text-red-600">{errors.address.country}</p>
             )}
           </div>
         </fieldset>
