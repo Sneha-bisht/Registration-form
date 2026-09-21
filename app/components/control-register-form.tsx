@@ -2,8 +2,51 @@
 import { useState } from "react";
 import { SubmittedDataModal } from "./submit-data-modal";
 
+
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  age: string;
+  phone: string;
+  department: string;
+  gender: string;
+  skills: string[];
+  about: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+}
+
+interface Errors {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  age?: string;
+  phone?: string;
+  department?: string;
+  gender?: string;
+  skills?: string;
+  about?: string;
+  address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+}
+
+
 export default function ControlRegisterform(){
-  const [formData, setFormData]= useState({
+ const [formData, setFormData] = useState<FormData>({
     name:"",
     email:"",
     password:"",
@@ -24,37 +67,59 @@ export default function ControlRegisterform(){
   });
 
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [errors, setErrors] = useState<any>({});
-  const [submittedData, setSubmittedData] = useState<any>(null);
+  
+  const [errors, setErrors] = useState<Errors>({});
+  const [submittedData, setSubmittedData] = useState<FormData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const inputStyle = "rounded-lg border px-3 py-2";
+  const errorMsg= "errorMsg";
 
 
-  const handleChange =(e:any)=>{
-    const {name, value} =e.target;
-    setFormData((prev)=>({...prev,[name]: value}));
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+) => {
+  const { name, value } = e.target;
+  const updated = { ...formData, [name]: value };
+  setFormData(updated);
 
-  }
+  const fieldErrors = validate(updated);
+  setErrors((prev) => ({ ...prev, [name]: fieldErrors[name as keyof Errors] }));
+};
 
- const handleAddressChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      address: { ...prev.address, [name]: value },
-    }));
+const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  const updated = {
+    ...formData,
+    address: { ...formData.address, [name]: value },
   };
-   const handleSkillChange = (e: any) => {
-    const { value, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      skills: checked
-        ? [...prev.skills, value]
-        : prev.skills.filter((s) => s !== value),
-    }));
-  };
+  setFormData(updated);
 
-   const validate = (data: typeof formData) => {
-    const errs: any = {};
+  const fieldErrors = validate(updated);
+  setErrors((prev) => ({
+    ...prev,
+    address: {
+      ...prev.address,
+      [name]: fieldErrors.address?.[name as keyof NonNullable<Errors["address"]>],
+    },
+  }));
+};
+
+const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { value, checked } = e.target;
+  const updated = {
+    ...formData,
+    skills: checked
+      ? [...formData.skills, value]
+      : formData.skills.filter((s) => s !== value),
+  };
+  setFormData(updated);
+
+  const fieldErrors = validate(updated);
+  setErrors((prev) => ({ ...prev, skills: fieldErrors.skills }));
+};
+
+   const validate = (data: FormData): Errors => {
+   const errs: Errors = {};
 
     if (!data.name.trim()) errs.name = "Name is required";
 
@@ -91,7 +156,7 @@ export default function ControlRegisterform(){
     else if (data.about.trim().length < 20)
       errs.about = "About must be at least 20 characters";
 
-    const addrErrs: any = {};
+    const addrErrs: NonNullable<Errors["address"]> = {};
     if (!data.address.street.trim()) addrErrs.street = "Street is required";
     if (!data.address.city.trim()) addrErrs.city = "City is required";
     if (!data.address.state.trim()) addrErrs.state = "State is required";
@@ -143,11 +208,11 @@ export default function ControlRegisterform(){
             name="name"
             type="text"
             placeholder="Enter your name"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.name}
             onChange={handleChange}
           />
-          {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
+          {errors.name && <p className="errorMsg">{errors.name}</p>}
         </div>
 
         {/* Email */}
@@ -158,11 +223,11 @@ export default function ControlRegisterform(){
             name="email"
             type="email"
             placeholder="Enter your email"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.email}
             onChange={handleChange}
           />
-          {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
+          {errors.email && <p className="errorMsg">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -173,11 +238,11 @@ export default function ControlRegisterform(){
             name="password"
             type="password"
             placeholder="Enter your password"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.password}
             onChange={handleChange}
           />
-          {errors.password && <p className="text-sm text-red-600">{errors.password}</p>}
+          {errors.password && <p className="errorMsg">{errors.password}</p>}
         </div>
 
         {/* Confirm password */}
@@ -188,12 +253,12 @@ export default function ControlRegisterform(){
             name="confirmPassword"
             type="password"
             placeholder="Confirm your password"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.confirmPassword}
             onChange={handleChange}
           />
           {errors.confirmPassword && (
-            <p className="text-sm text-red-600">{errors.confirmPassword}</p>
+            <p className="errorMsg">{errors.confirmPassword}</p>
           )}
         </div>
 
@@ -205,11 +270,11 @@ export default function ControlRegisterform(){
             name="age"
             type="number"
             placeholder="Enter your age"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.age}
             onChange={handleChange}
           />
-          {errors.age && <p className="text-sm text-red-600">{errors.age}</p>}
+          {errors.age && <p className="errorMsg">{errors.age}</p>}
         </div>
 
         {/* Phone */}
@@ -220,11 +285,11 @@ export default function ControlRegisterform(){
             name="phone"
             type="tel"
             placeholder="Enter your phone number"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.phone}
             onChange={handleChange}
           />
-          {errors.phone && <p className="text-sm text-red-600">{errors.phone}</p>}
+          {errors.phone && <p className="errorMsg">{errors.phone}</p>}
         </div>
 
         {/* Department */}
@@ -245,7 +310,7 @@ export default function ControlRegisterform(){
             <option value="marketing">Marketing</option>
           </select>
           {errors.department && (
-            <p className="text-sm text-red-600">{errors.department}</p>
+            <p className="errorMsg">{errors.department}</p>
           )}
         </div>
 
@@ -282,7 +347,7 @@ export default function ControlRegisterform(){
             />
             Other
           </label>
-          {errors.gender && <p className="text-sm text-red-600">{errors.gender}</p>}
+          {errors.gender && <p className="errorMsg">{errors.gender}</p>}
         </fieldset>
 
         {/* Skills */}
@@ -324,7 +389,7 @@ export default function ControlRegisterform(){
             />
             TypeScript
           </label>
-          {errors.skills && <p className="text-sm text-red-600">{errors.skills}</p>}
+          {errors.skills && <p className="errorMsg">{errors.skills}</p>}
         </fieldset>
 
        
@@ -337,11 +402,11 @@ export default function ControlRegisterform(){
             name="about"
             rows={4}
             placeholder="Tell us about yourself"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             value={formData.about}
             onChange={handleChange}
           />
-          {errors.about && <p className="text-sm text-red-600">{errors.about}</p>}
+          {errors.about && <p className="errorMsg">{errors.about}</p>}
         </div>
 
         {/* Address */}
@@ -354,12 +419,12 @@ export default function ControlRegisterform(){
               id="street"
               name="street"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               value={formData.address.street}
               onChange={handleAddressChange}
             />
             {errors.address?.street && (
-              <p className="text-sm text-red-600">{errors.address.street}</p>
+              <p className="errorMsg">{errors.address.street}</p>
             )}
           </div>
 
@@ -369,12 +434,12 @@ export default function ControlRegisterform(){
               id="city"
               name="city"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               value={formData.address.city}
               onChange={handleAddressChange}
             />
             {errors.address?.city && (
-              <p className="text-sm text-red-600">{errors.address.city}</p>
+              <p className="errorMsg">{errors.address.city}</p>
             )}
           </div>
 
@@ -384,12 +449,12 @@ export default function ControlRegisterform(){
               id="state"
               name="state"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               value={formData.address.state}
               onChange={handleAddressChange}
             />
             {errors.address?.state && (
-              <p className="text-sm text-red-600">{errors.address.state}</p>
+              <p className="errorMsg">{errors.address.state}</p>
             )}
           </div>
 
@@ -399,12 +464,12 @@ export default function ControlRegisterform(){
               id="zipCode"
               name="zipCode"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               value={formData.address.zipCode}
               onChange={handleAddressChange}
             />
             {errors.address?.zipCode && (
-              <p className="text-sm text-red-600">{errors.address.zipCode}</p>
+              <p className="errorMsg">{errors.address.zipCode}</p>
             )}
           </div>
 
@@ -414,12 +479,12 @@ export default function ControlRegisterform(){
               id="country"
               name="country"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               value={formData.address.country}
               onChange={handleAddressChange}
             />
             {errors.address?.country && (
-              <p className="text-sm text-red-600">{errors.address.country}</p>
+              <p className="errorMsg">{errors.address.country}</p>
             )}
           </div>
         </fieldset>

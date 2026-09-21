@@ -3,24 +3,46 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SubmittedDataModal } from "./submit-data-modal";
 
+interface RegisterFormFields {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  age: number;
+  phone: string;
+  department: string;
+  gender: string;
+  skills: string[];
+  terms: boolean;
+  about: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+}
+
 export default function Registerform() {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<RegisterFormFields>();
 
-  const password = watch("password");
-  const [submittedData, setSubmittedData] = useState<any>(null);
+  
+  const [submittedData, setSubmittedData] = useState<RegisterFormFields | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: RegisterFormFields) => {
     setSubmittedData(data);
     setIsModalOpen(true);
   };
 
+  const inputStyle = "rounded-lg border px-3 py-2";
   return (
     <main className="mx-auto my-10 max-w-2xl px-4">
       <h1 className="mb-6 text-3xl font-bold">Registration Form</h1>
@@ -39,7 +61,7 @@ export default function Registerform() {
             id="name"
             type="text"
             placeholder="Enter your name"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("name", {
               required: "Name is required",
             })}
@@ -60,7 +82,7 @@ export default function Registerform() {
             id="email"
             type="email"
             placeholder="Enter your email"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -85,7 +107,7 @@ export default function Registerform() {
             id="password"
             type="password"
             placeholder="Enter your password"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -110,11 +132,11 @@ export default function Registerform() {
             id="confirmPassword"
             type="password"
             placeholder="Confirm your password"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("confirmPassword", {
               required: "Please confirm your password",
               validate: (value) =>
-                value === password || "Passwords do not match",
+                 value === getValues("password") || "Passwords do not match",
             })}
           />
 
@@ -135,7 +157,7 @@ export default function Registerform() {
             id="age"
             type="number"
             placeholder="Enter your age"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("age", {
               required: "Age is required",
               valueAsNumber: true,
@@ -165,7 +187,7 @@ export default function Registerform() {
             id="phone"
             type="tel"
             placeholder="Enter your phone number"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("phone", {
               required: "Phone number is required",
               pattern: {
@@ -188,7 +210,7 @@ export default function Registerform() {
 
           <select
             id="department"
-            className="rounded-lg border px-3 py-2 bg-white text-gray-900"
+             className={`${inputStyle} bg-white text-gray-900`}
             {...register("department", {
               required: "Please select a department",
             })}
@@ -300,7 +322,7 @@ export default function Registerform() {
             id="about"
             rows={4}
             placeholder="Tell us about yourself"
-            className="rounded-lg border px-3 py-2"
+            className={inputStyle}
             {...register("about", {
               required: "Please tell us something about yourself",
               minLength: {
@@ -326,7 +348,7 @@ export default function Registerform() {
             <input
               id="street"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               {...register("address.street", {
                 required: "Street is required",
               })}
@@ -346,7 +368,7 @@ export default function Registerform() {
             <input
               id="city"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               {...register("address.city", {
                 required: "City is required",
               })}
@@ -366,7 +388,7 @@ export default function Registerform() {
             <input
               id="state"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               {...register("address.state", {
                 required: "State is required",
               })}
@@ -386,7 +408,7 @@ export default function Registerform() {
             <input
               id="zipCode"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               {...register("address.zipCode", {
                 required: "ZIP code is required",
                 pattern: {
@@ -410,7 +432,7 @@ export default function Registerform() {
             <input
               id="country"
               type="text"
-              className="rounded-lg border px-3 py-2"
+              className={inputStyle}
               {...register("address.country", {
                 required: "Country is required",
               })}
